@@ -40,6 +40,7 @@ class MorefunMpos {
   }
   static Future<CardParamResultDto> executeCardReading(String amount) async{
     var result = await _channel.invokeMethod('executeCardReading', {"amount": amount});
+    print(result);
     return CardParamResultDto.fromJson(result);
   }
   static Future<dynamic> calcMac() async{
@@ -53,7 +54,7 @@ class MorefunMpos {
     return await _channel.invokeMethod('getRandomNumbers');
   }
 
-  static Future<void> downloadAID() async {
+  static Future<bool> downloadAID() async {
     return await _channel.invokeMethod('downloadAID');
   }
 

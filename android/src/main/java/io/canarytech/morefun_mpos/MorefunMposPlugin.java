@@ -101,7 +101,6 @@ public class MorefunMposPlugin implements FlutterPlugin, MethodCallHandler, Acti
   private void onAttachedToEngine(Context applicationContext, BinaryMessenger messenger) {
     this.mContext = applicationContext;
 
-
     channel = new MethodChannel(messenger, TAG);
     channel.setMethodCallHandler(this);
 
@@ -109,35 +108,21 @@ public class MorefunMposPlugin implements FlutterPlugin, MethodCallHandler, Acti
 
 
 
+
   }
-  
-//  @Override
-//  public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
-//    channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), TAG);
-//    channel.setMethodCallHandler(this);
-//
-//  }
+
 
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
     onAttachedToEngine(flutterPluginBinding.getApplicationContext(),flutterPluginBinding.getBinaryMessenger());  // <- this is the line we need here, a new method call
-//    final MethodChannel channel = new MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), TAG);
-//    channel.setMethodCallHandler(new MorefunMposPlugin());
+
   }
 
   @Override
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
-//    if (call.method.equals("getPlatformVersion")) {
-//      result.success("Android " + android.os.Build.VERSION.RELEASE);
-//    } else if(call.method.equals("connect")){
-//      String mac = call.argument("macAddress");
-//      result.success(connectDevice(mac));
-//    }else {
-//      result.notImplemented();
-//    }
 
     mResult = result;
-//    mResult = new MethodResultWrapper(result);
+
     try {
 
       switch (call.method) {
@@ -193,7 +178,7 @@ public class MorefunMposPlugin implements FlutterPlugin, MethodCallHandler, Acti
           break;
 
         case "downloadAID":
-          downloadAID();
+          result.success(downloadAID());
           break;
         case "downloadPUK":
           downloadPUK();
@@ -239,8 +224,6 @@ public class MorefunMposPlugin implements FlutterPlugin, MethodCallHandler, Acti
   public void onAttachedToActivity(ActivityPluginBinding binding ) {
     this.mActivity = binding.getActivity();
 
-
-
   }
 
   @Override
@@ -248,110 +231,19 @@ public class MorefunMposPlugin implements FlutterPlugin, MethodCallHandler, Acti
    // TODO("Not yet implemented");
   }
 
-//  public static boolean permissionRequest(Activity activity, int requestCode) {
-//    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//      int storagePermission = activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-//      int access_location = activity.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
-//      //Check the permission, if don't, you need to apply
-//      if (storagePermission != PackageManager.PERMISSION_GRANTED || access_location != PackageManager.PERMISSION_GRANTED) {
-//        //apply the permission
-//        activity.requestPermissions(premission, requestCode);
-//        //return false。There's no permission
-//        return false;
-//      }
-//    }
-//    //Already apply the permission
-//    return true;
-//  }
-//
-//  private void registerReceiver() {
-//    try {
-//      br = new BluetoothReceiver();
-//      IntentFilter filter = new IntentFilter();
-//      filter.addAction(BluetoothDevice.ACTION_FOUND);
-//      mContext.registerReceiver(br, filter);
-//    } catch (Exception e) {
-//      //e.printStackTrace();
-//    }
-//  }
-//
-//  private void unregisterReceiver() {
-//    if (br != null) {
-//      try {
-//        mContext.unregisterReceiver(br);
-//      } catch (Exception e) {
-//        //e.printStackTrace();
-//      }
-//    }
-//    br = null;
-//  }
-//
-//  private void startDiscovery() {
-//    Set<BluetoothDevice> pairedDevices = btAdapter.getBondedDevices();
-//    for (BluetoothDevice device : pairedDevices) {
-//      Log.d(TAG, "startDiscovery: btName: " + device.getName() +" mac: "+ device.getAddress());
-//    }
-//
-//  }
-//
-//  private class BluetoothReceiver extends BroadcastReceiver {
-//    @Override
-//    public void onReceive(Context context, Intent intent) {
-//      // TODO Auto-generated method stub
-//      try {
-//        if (BluetoothDevice.ACTION_FOUND.equals(intent.getAction())) {
-//          BluetoothDevice btDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-//          Log.d(TAG, "onReceive: btName: "+btDevice.getName() +" mac: "+ btDevice.getAddress() );
-//        }
-//      } catch (Exception e) {
-//        e.printStackTrace();
-//      }
-//    }
-//  }
-
   private void connectDevice(final String mac) {
     Log.d(TAG, "connectDevice: connecting to "+ mac);
-//    Log.d(TAG, "onAttachedToActivity: here");
-//    if(permissionRequest(mActivity, 1)){
-
-//      btAdapter.enable();
-//
-//      registerReceiver();
-//
-//      btAdapter.cancelDiscovery();
-//      startDiscovery();
-//    }
-//    BluetoothManager bluetoothManager = (BluetoothManager) mActivity.getSystemService(Context.BLUETOOTH_SERVICE);
-//    btAdapter.cancelDiscovery();
-//    if (Controler.posConnected()) {
-//      Controler.disconnectPos();
-//    }
-
-
-
-//    Log.d(TAG, "connectDevice: "+ret.result);
-
-//    calcMacCallable().subscribeOn(Schedulers.newThread())
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe(new Consumer<String>() {
-//              @Override
-//              public void accept(String s) throws Exception {
-//                Log.d(TAG, "accept: "+s);
-//              }
-//            });
-
-//      calcMacCallable(mac);
-//    return Controler.posConnected();
-
-//    Thread one = new Thread() {
-//      public void run() {
-//        try {
-//          System.out.println("Does it work?");
-
           ConnectPosResult ret = Controler.connectPos(mac);
+          //Terminal capabilities: 9f3303 ALLOW OFFLINE PIN
+//    boolean res = Controler.SetEmvParamTlv("9F01061234567890009F40057000F0A0019F150254119F160F3132333435363738393031323334359F3901059F330360D0C89F1A0205669F1C0831323334353637389F3501225F2A0205665F3601029F3C0205669F3D01029F1E086D665F36306220209F660434000080");
+    // Terminal capabilities: 9f3303 FORCE ONLINE PIN ON ALL CARDS --use this
+//    boolean res = Controler.SetEmvParamTlv("9F01063132333435369F40057000F0A0019F150254119F160F3132333435363738393031323334359F3901059F3303E0F8C89F1A0205669F1C0831323334353637389F3501225F2A0205665F3601029F3C0205669F3D01029F1E086D665F36306220209F660434000080");
+
+//    boolean res = Controler.SetEmvParamTlv("9F01063132333435369F40057000F0A0019F150254119F160F3132333435363738393031323334359F3901059F3303E040C89F1A0205669F1C0831323334353637389F3501225F2A0205665F3601029F3C0205669F3D01029F1E086D665F36306220209F660434000080");
+    boolean res = Controler.SetEmvParamTlv("9F40057000F0A0019F150254119F160F3132333435363738393031323334359F3901059F3303E040C89F1A0205669F1C0831323334353637389F3501225F2A0205665F3601029F3C0205669F3D01029F1E0870617261706179319F660434000080");
+
+    //    Log.d(TAG, "onAttachedToEngine: setEmvParam successful: "+res);
           mResult.success(ret.bConnected);
-
-
   }
 
   private void isConnected(){
@@ -398,37 +290,46 @@ public class MorefunMposPlugin implements FlutterPlugin, MethodCallHandler, Acti
   }
 
   private final String[] aids = new String[]{
-          //Union Pay
-          "9F0608A000000333010100DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06000000200000DF1906000000200000DF2006000002000000DF2106000000100000",
-          "9F0608A000000333010101DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06000000200000DF1906000000200000DF2006000002000000DF2106000000100000",
-          "9F0608A000000333010102DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06000000200000DF1906000000200000DF2006000002000000DF2106000000100000",
-          "9F0608A000000333010103DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06000000200000DF1906000000200000DF2006000002000000DF2106000000100000",
-          //Visa
-          "9F0607A0000000031010DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06000000200000DF1906000000200000DF2006000002000000DF2106000000100000",
-          //Master
-          "9F0607A0000000041010DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06000000200000DF1906000000200000DF2006000002000000DF2106000000100000",
-          //Local Master
-          "9F0607D4100000012010DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06000000200000DF1906000000200000DF2006000002000000DF2106000000100000",
-          //Local Visa
-          "9F0607D4100000011010DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06000000200000DF1906000000200000DF2006000002000000DF2106000000100000",
-          //AMERICAN EXPRESS
-          "9F0608A000000025010402DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06000000200000DF1906000000200000DF2006000002000000DF2106000000100000",
-          //AMERICAN EXPRESS
-          "9F0608A000000025010501DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06000000200000DF1906000000200000DF2006000002000000DF2106000000100000",
-          //JCB
-          "9F0607A0000000651010DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06000000200000DF1906000000200000DF2006000002000000DF2106000000100000",
-          //D-PAS
-          "9F090200649F0607A0000001523010DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06000000200000DF1906000000200000DF2006000002000000DF2106000000100000",
-          //Rupay
-          "9F090200649F0607A0000005241010DF010100DF11050000000000DF12050000000000DF130500000000009F1B04000186A0DF14039F3704DF150400000000DF160105DF170100DF1801319F7B06000000200000DF1906000000200000DF2006000002000000DF2106000000100000",
-          "9F090200649F0608A000000524010101DF010100DF11050000000000DF12050000000000DF130500000000009F1B04000186A0DF150400000000DF160100DF170100DF14039F3704DF1801319F7B06000000010000DF1906000000010000DF2006000000050000DF2106000000004000",
-          "9F090200649F0607A0000005241011DF010100DF11050000000000DF12050000000000DF130500000000009F1B04000186A0DF14039F3704DF150400000000DF160105DF170100DF1801319F7B06000000200000DF1906000000200000DF2006000002000000DF2106000000100000",
+//          //Union Pay
+//          "9F0608A000000333010100DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06000000200000DF1906000000200000DF2006000002000000DF2106000000100000",
+//          "9F0608A000000333010101DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06000000200000DF1906000000200000DF2006000002000000DF2106000000100000",
+//          "9F0608A000000333010102DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06000000200000DF1906000000200000DF2006000002000000DF2106000000100000",
+//          "9F0608A000000333010103DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06000000200000DF1906000000200000DF2006000002000000DF2106000000100000",
+//          //Visa
+//          "9F0607A0000000031010DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06000000200000DF1906000000200000DF2006000002000000DF2106000200000000",
+          //verve
+          "9F0607A0000003710001DF0101009F08020001DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06000000200000DF1906000000200000DF2006000002000000DF2106000200000000",
+//          //Master
+//          "9F0607A0000000041010DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06000000200000DF1906000000200000DF2006000002000000DF2106000200000000",
+//          //Local Master
+//          "9F0607D4100000012010DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06000000200000DF1906000000200000DF2006000002000000DF2106000000100000",
+//          //Local Visa
+//          "9F0607D4100000011010DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06000000200000DF1906000000200000DF2006000002000000DF2106000000100000",
+//          //AMERICAN EXPRESS
+//          "9F0608A000000025010402DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06000000200000DF1906000000200000DF2006000002000000DF2106000000100000",
+//          //AMERICAN EXPRESS
+//          "9F0608A000000025010501DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06000000200000DF1906000000200000DF2006000002000000DF2106000000100000",
+//          //JCB
+//          "9F0607A0000000651010DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06000000200000DF1906000000200000DF2006000002000000DF2106000000100000",
+//          //D-PAS
+//          "9F090200649F0607A0000001523010DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06000000200000DF1906000000200000DF2006000002000000DF2106000000100000",
+//          //Rupay
+//          "9F090200649F0607A0000005241010DF010100DF11050000000000DF12050000000000DF130500000000009F1B04000186A0DF14039F3704DF150400000000DF160105DF170100DF1801319F7B06000000200000DF1906000000200000DF2006000002000000DF2106000000100000",
+//          "9F090200649F0608A000000524010101DF010100DF11050000000000DF12050000000000DF130500000000009F1B04000186A0DF150400000000DF160100DF170100DF14039F3704DF1801319F7B06000000010000DF1906000000010000DF2006000000050000DF2106000000004000",
+//          "9F090200649F0607A0000005241011DF010100DF11050000000000DF12050000000000DF130500000000009F1B04000186A0DF14039F3704DF150400000000DF160105DF170100DF1801319F7B06000000200000DF1906000000200000DF2006000002000000DF2106000000100000",
   };
 
-  private void downloadAID() {
-    for (String aid : aids) {
-      Controler.ICAidManage(CommEnum.ICAIDACTION.ADD, Misc.asc2hex(aid));
+  private boolean downloadAID() {
+    for (int j = 0; j < aids.length; j++) {
+      String aid = aids[j];
+//      setProgress("Start download AID(" + (j + 1) + "/" + aids.length + ")");
+      ICAidResult result = Controler.ICAidManage(CommEnum.ICAIDACTION.ADD, Misc.asc2hex(aid));
+      if (!result.commResult.equals(CommEnum.COMMRET.NOERROR)) {
+
+        return false;
+      }
     }
+    return true;
   }
 
   private String readAIDList() {
@@ -455,7 +356,7 @@ public class MorefunMposPlugin implements FlutterPlugin, MethodCallHandler, Acti
   }
 
   public Map<String, Object> getDeviceInfo() {
-    ReadPosInfoResult readPosInfoResult = Controler.ReadPosInfo2();
+    ReadPosInfoResult readPosInfoResult = Controler.ReadPosInfo();
 
     Map<String, Object> map = new HashMap<>();
     StringBuilder builder = new StringBuilder();
@@ -602,7 +503,7 @@ public class MorefunMposPlugin implements FlutterPlugin, MethodCallHandler, Acti
                                          ReadCardParam.onStepListener listener) {
     ReadCardParam param = new ReadCardParam();
 //    String amount = "000000000001";
-    byte timeOut = 40;
+    byte timeOut = 60;
 
     param.setAllowfallback(true);
     param.setAmount(Long.parseLong(amount));
@@ -615,7 +516,7 @@ public class MorefunMposPlugin implements FlutterPlugin, MethodCallHandler, Acti
     param.setTransName("ParaPay Agent");
     param.setTags(getTags());
     //0x01 for swipe card mode, 0x02 for chip and 0x04 TF (Tap), don't set if you want to use any of them
-    param.setCardmode((byte) 0x02);
+//    param.setCardmode((byte) 0x02);
 
     param.setOnSteplistener(listener);
     return param;
@@ -624,27 +525,36 @@ public class MorefunMposPlugin implements FlutterPlugin, MethodCallHandler, Acti
   private List<byte[]> getTags() {
     List<byte[]> tags = new ArrayList<byte[]>();
 
+    tags.add(EmvTagDef.EMV_TAG_9F01_TM_ACQID);
     tags.add(EmvTagDef.EMV_TAG_9F02_TM_AUTHAMNTN);
+    tags.add(EmvTagDef.EMV_TAG_9F03_TM_OTHERAMNTN);
+    tags.add(EmvTagDef.EMV_TAG_9F09_TM_APPVERNO);
+    tags.add(EmvTagDef.EMV_TAG_9F10_IC_ISSAPPDATA);
+    tags.add(EmvTagDef.EMV_TAG_9F15_TM_MCHCATCODE);
     tags.add(EmvTagDef.EMV_TAG_9F26_IC_AC);
     tags.add(EmvTagDef.EMV_TAG_9F27_IC_CID);
-    tags.add(EmvTagDef.EMV_TAG_9F10_IC_ISSAPPDATA);
-    tags.add(EmvTagDef.EMV_TAG_9F37_TM_UNPNUM);
-    tags.add(EmvTagDef.EMV_TAG_9F36_IC_ATC);
-    tags.add(EmvTagDef.EMV_TAG_95_TM_TVR);
-    tags.add(EmvTagDef.EMV_TAG_9A_TM_TRANSDATE);
-    tags.add(EmvTagDef.EMV_TAG_9C_TM_TRANSTYPE);
-    tags.add(EmvTagDef.EMV_TAG_5F2A_TM_CURCODE);
-    tags.add(EmvTagDef.EMV_TAG_82_IC_AIP);
-    tags.add(EmvTagDef.EMV_TAG_9F1A_TM_CNTRYCODE);
-    tags.add(EmvTagDef.EMV_TAG_9F03_TM_OTHERAMNTN);
     tags.add(EmvTagDef.EMV_TAG_9F33_TM_CAP);
     tags.add(EmvTagDef.EMV_TAG_9F34_TM_CVMRESULT);
     tags.add(EmvTagDef.EMV_TAG_9F35_TM_TERMTYPE);
-    tags.add(EmvTagDef.EMV_TAG_9F1E_TM_IFDSN);
-    tags.add(EmvTagDef.EMV_TAG_84_IC_DFNAME);
-    tags.add(EmvTagDef.EMV_TAG_9F09_TM_APPVERNO);
-    tags.add(EmvTagDef.EMV_TAG_9F63_TM_BIN);
+    tags.add(EmvTagDef.EMV_TAG_9F36_IC_ATC);
+    tags.add(EmvTagDef.EMV_TAG_9F37_TM_UNPNUM);
     tags.add(EmvTagDef.EMV_TAG_9F41_TM_TRSEQCNTR);
+    tags.add(EmvTagDef.EMV_TAG_9F1A_TM_CNTRYCODE);
+    tags.add(EmvTagDef.EMV_TAG_9F1E_TM_IFDSN);
+    tags.add(EmvTagDef.EMV_TAG_95_TM_TVR);
+    tags.add(EmvTagDef.EMV_TAG_9A_TM_TRANSDATE);
+    tags.add(EmvTagDef.EMV_TAG_9C_TM_TRANSTYPE);
+    tags.add(EmvTagDef.EMV_TAG_5F24_IC_APPEXPIREDATE);
+    tags.add(EmvTagDef.EMV_TAG_5F2A_TM_CURCODE);
+    tags.add(EmvTagDef.EMV_TAG_5F34_IC_PANSN);
+    tags.add(EmvTagDef.EMV_TAG_82_IC_AIP);
+    tags.add(EmvTagDef.EMV_TAG_84_IC_DFNAME);
+    tags.add(EmvTagDef.EMV_TAG_8E_IC_CVMLIST);
+
+
+//        tags.add(EmvTagDef.EMV_TAG_9F63_TM_BIN);
+//        tags.add(EmvTagDef.EMV_TAG_8E_IC_CVMLIST);
+
     return tags;
   }
 
@@ -719,6 +629,13 @@ public class MorefunMposPlugin implements FlutterPlugin, MethodCallHandler, Acti
           data.put("mac_ksn", result.mac_ksn);
           data.put("mag_ksn", result.mag_ksn);
           data.put("pin_ksn", result.pin_ksn);
+
+
+          data.put("track2_len", result.track2Len);
+          data.put("encryptPan", result.encryptPan);
+          //0x01 脱机批准approve 0x02联机请求online 0x03交易拒绝reject 0x04交易中止termination
+          data.put("emvResult", result.emvResult);
+          data.put("serviceCode", result.serviceCode);
 
 
 
@@ -815,7 +732,7 @@ public class MorefunMposPlugin implements FlutterPlugin, MethodCallHandler, Acti
   private boolean loadMainKey(String key, String kcv) {
 //    String key = "1111111111111111111111111111111182E13665";
 
-    Log.d(TAG, "loadMainKey: "+key + " --- "+ kcv);
+//    Log.d(TAG, "loadMainKey: "+key + " --- "+ kcv);
     byte[] keyBuf = BytesUtil.hexString2ByteArray(key);
 
 //    byte[] kekD1 = BytesUtil.subBytes(keyBuf, 0, 8);
@@ -824,9 +741,9 @@ public class MorefunMposPlugin implements FlutterPlugin, MethodCallHandler, Acti
     byte[] kekD2 = Misc.asc2hex(key, 16, 16, 0);
     byte[] kvcBuf = BytesUtil.hexString2ByteArray(kcv);
 
-    Misc.traceHex(TAG, "updateMainKey kekD1", kekD1);
-    Misc.traceHex(TAG, "updateMainKey kekD2", kekD2);
-    Misc.traceHex(TAG, "updateMainKey kvc", kvcBuf);
+//    Misc.traceHex(TAG, "updateMainKey kekD1", kekD1);
+//    Misc.traceHex(TAG, "updateMainKey kekD2", kekD2);
+//    Misc.traceHex(TAG, "updateMainKey kvc", kvcBuf);
 
     LoadMainKeyResult result = Controler.LoadMainKey(CommEnum.MAINKEYENCRYPT.PLAINTEXT,
             CommEnum.KEYINDEX.INDEX0,
@@ -840,7 +757,7 @@ public class MorefunMposPlugin implements FlutterPlugin, MethodCallHandler, Acti
 //    String pinKey = "B7C60530D82A361516E938B5343D2F774C82B0AF";
 //    String macKey = "B7C60530D82A361516E938B5343D2F774C82B0AF";
 //    String tdkKey = "B7C60530D82A361516E938B5343D2F774C82B0AF";
-    Log.d(TAG, "updateWorkingKey: "+pinKey + " --- "+ pinKCV  +" --- "+ sessionKey +  " --- " +sessionKCV);
+//    Log.d(TAG, "updateWorkingKey: "+pinKey + " --- "+ pinKCV  +" --- "+ sessionKey +  " --- " +sessionKCV);
 
     String key = pinKey + pinKCV  + sessionKey + sessionKCV + sessionKey + sessionKCV;
 //    String key = pinKey + pinKCV;
@@ -848,7 +765,7 @@ public class MorefunMposPlugin implements FlutterPlugin, MethodCallHandler, Acti
     CommEnum.KEYINDEX mainKeyIndex = CommEnum.KEYINDEX.INDEX0;
 
     byte[] keyArrays = Misc.asc2hex(key);
-    Log.d(TAG, "updateWorkingKey key:" + key);
+//    Log.d(TAG, "updateWorkingKey key:" + key);
 
     LoadWorkKeyResult result = Controler.LoadWorkKey(mainKeyIndex, CommEnum.WORKKEYTYPE.DOUBLEMAG,
             keyArrays, keyArrays.length);
