@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/morefun_mpos.iml" filepath="$PROJECT_DIR$/.idea/modules/morefun_mpos.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/morefun_mpos_sdk_v2.0.20112308/morefun_mpos.morefun_mpos_sdk_v2.0.20112308.iml" filepath="$PROJECT_DIR$/.idea/modules/morefun_mpos_sdk_v2.0.20112308/morefun_mpos.morefun_mpos_sdk_v2.0.20112308.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/io.canarytech.morefun_mpos.morefun_mpos.iml" filepath="$PROJECT_DIR$/.idea/modules/io.canarytech.morefun_mpos.morefun_mpos.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/libs/morefun_mpos.libs.iml" filepath="$PROJECT_DIR$/.idea/modules/libs/morefun_mpos.libs.iml" />
     </modules>
   </component>
 </project>

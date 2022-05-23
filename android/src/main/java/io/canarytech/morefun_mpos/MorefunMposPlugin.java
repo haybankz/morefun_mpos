@@ -549,11 +549,11 @@ public class MorefunMposPlugin implements FlutterPlugin, MethodCallHandler, Acti
     tags.add(EmvTagDef.EMV_TAG_5F34_IC_PANSN);
     tags.add(EmvTagDef.EMV_TAG_82_IC_AIP);
     tags.add(EmvTagDef.EMV_TAG_84_IC_DFNAME);
-    tags.add(EmvTagDef.EMV_TAG_8E_IC_CVMLIST);
-
-
-//        tags.add(EmvTagDef.EMV_TAG_9F63_TM_BIN);
-//        tags.add(EmvTagDef.EMV_TAG_8E_IC_CVMLIST);
+//    tags.add(EmvTagDef.EMV_TAG_8E_IC_CVMLIST);
+    // for coralpay
+//    tags.add(EmvTagDef.EMV_TAG_9F0D_IC_IAC_DEFAULT);
+//    tags.add(EmvTagDef.EMV_TAG_9F0E_IC_IAC_DENIAL);
+//    tags.add(EmvTagDef.EMV_TAG_9F0F_IC_IAC_ONLINE);
 
     return tags;
   }
